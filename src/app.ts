@@ -1,4 +1,6 @@
 import express, {  Request, Response } from "express";
+import api_v1 from "./routes";
+
 const app = express();
 
 
@@ -20,5 +22,6 @@ app.get('/health', (req: Request, res: Response) => {
     });
   }
 });
+app.use("/v1", api_v1);
 
 export default app;

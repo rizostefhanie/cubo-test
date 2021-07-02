@@ -1,6 +1,7 @@
 import app from "./app";
 import http from "http";
 import dotenv from "dotenv";
+import {connectionDefault} from "./config/mongo_connection";
 
 
 // Load environment variables
@@ -72,4 +73,5 @@ function onListening() {
       : `${address?.address}:${address?.port}`;
 
   console.log("Running in PORT: " + bind);
+  connectionDefault();
 }

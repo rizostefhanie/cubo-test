@@ -6,7 +6,8 @@ const userSchema = new Schema({
   lastName: String,
   username : string,
   password: string,
-  email: string
+  email: string,
+  rol: { type: Schema.Types.ObjectId, ref: "Rol" },
 });
 
 export const user = mongoose.model('User', userSchema);
