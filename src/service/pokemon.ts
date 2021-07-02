@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Pokemon, IPokemon } from "../models/pokemon"
 
-export const createPokemon = async (req: Request, resp: Response) => {
+export const addPokemon = async (req: Request, resp: Response) => {
   try {
     let pokemon: IPokemon = req.body;
     let pokemonModel = new Pokemon(pokemon)
@@ -14,7 +14,7 @@ export const createPokemon = async (req: Request, resp: Response) => {
   }
 }
 
-export const updatePokemon = async (req: Request, resp: Response) => {
+export const modifyPokemon = async (req: Request, resp: Response) => {
   try {
     const pokemon = await Pokemon.findById(req.params.id).exec();
     if (pokemon) {
@@ -31,7 +31,7 @@ export const updatePokemon = async (req: Request, resp: Response) => {
     resp.json({ message: "Error : " + error });
   }
 }
-export const deletePokemon = async (req: Request, resp: Response) => {
+export const removePokemon = async (req: Request, resp: Response) => {
   try {
     await Pokemon.findByIdAndDelete(req.params.id).exec();
     resp.status(200);

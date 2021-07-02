@@ -1,9 +1,10 @@
 import express, { Router } from "express";
-import {createPokemon, deletePokemon, updatePokemon} from "../service/pokemon"
+import {addPokemon, modifyPokemon, removePokemon} from "../service/pokemon"
 const router: Router = express.Router();
 
-router.post("/", createPokemon);
-router.put("/:id", updatePokemon);
-router.delete("/:id", deletePokemon);
-router.delete("/:id", deletePokemon);
+router.post("/", addPokemon);
+router.put("/:id", modifyPokemon);
+router.delete("/:id", removePokemon);
+
+
 export default router;
