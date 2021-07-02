@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import * as bcrypt from "bcrypt";
+
 const { Schema } = mongoose;
 
 export interface IUser  {
@@ -19,5 +21,15 @@ const userSchema = new Schema({
   rol: { type: Schema.Types.ObjectId, ref: "Rol" },
   
 });
+// Encrypt Password
+userSchema.pre("save", function(this: IUser, next) {
+  const saltRounds = 10;
+  const self = this;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(self.password, salt);
+  this.password = hash;
+  next();
+});
+
 
 export const User = mongoose.model('User', userSchema);
