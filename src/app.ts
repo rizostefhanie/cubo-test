@@ -4,7 +4,8 @@ import passport from "passport";
 import { Rol } from "./models/rol";
 import auth from "./routes/auth"
 import { Strategy, ExtractJwt } from "passport-jwt";
-
+import * as swaggerUi from 'swagger-ui-express';
+import * as YAML  from 'yamljs';
 const app = express();
 
 app.use(express.json());
@@ -12,6 +13,9 @@ let opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: "$@CUBO2021FINANCE$",
 };
+
+const swaggerDocument = YAML.load('./swagger.yaml');
+
 
 //Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +26,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
           return done(null, false);
         }
         else{
-          console.log("rol =>" +JSON.stringify(rol))
           done(null, { username: jwt_payload.data.username });
         }
       });
@@ -60,8 +63,8 @@ app.get("/unauthorized", (req: Request, res: Response) => {
     });
   }
 });
+app.use('/cubo-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/auth", auth);
-
 app.use("/", passport.authenticate("jwt", { session: false, failureRedirect: "/unauthorized",}), api_v1);
 
 export default app;
