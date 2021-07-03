@@ -17,7 +17,7 @@ let opts = {
 const swaggerDocument = YAML.load('./swagger.yaml');
 
 
-//Middleware
+//Passport middleware 
 app.use((req: Request, res: Response, next: NextFunction) => {
   passport.use(
     new Strategy(opts, function (jwt_payload, done) {
@@ -52,6 +52,10 @@ app.get("/health", (req: Request, res: Response) => {
     });
   }
 });
+
+/**
+ * Unauthorized endpoint
+ */
 app.get("/unauthorized", (req: Request, res: Response) => {
   try {
     res.status(401).send({
@@ -63,8 +67,18 @@ app.get("/unauthorized", (req: Request, res: Response) => {
     });
   }
 });
+
+/**
+ * Cubo docs API 
+ */
 app.use('/cubo-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+/**
+ * Authentication endpoint
+ */
 app.use("/auth", auth);
+/**
+ * General endpoints
+ */
 app.use("/", passport.authenticate("jwt", { session: false, failureRedirect: "/unauthorized",}), api_v1);
 
 export default app;
