@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import { User, IUser } from "../models/User"
-import {validatePassword} from "../config/utils"
+import {validatePassword, tokenSign} from "../config/utils"
 
 export const registerUser = async (req: Request, resp: Response) => {
   try {
@@ -20,15 +20,21 @@ export const registerUser = async (req: Request, resp: Response) => {
 export const loginUser = async (req: Request, resp: Response) => {
   try {
     let user = await User.findOne({username : req.body.username}).exec();
-    console.log("user => "+JSON.stringify(user))
+  
    if(user){
       let validate = validatePassword( user.password, req.body.password);
       if(validate){
-        resp.status(200);
-    resp.json({ message: "Authorized" });
+        let token = tokenSign(user.username, user.rol )
+        if(token!=""){
+          resp.status(200);
+          resp.json({ message: "Authorized", token: token, user: user });
+        }else{
+          resp.status(500);
+          resp.json({ message: "Token generated error" });
+        }
       }else{
         resp.status(401);
-    resp.json({ message: "Unauthorized" });
+        resp.json({ message: "Unauthorized" });
       }
    }else{
      resp.status(200);

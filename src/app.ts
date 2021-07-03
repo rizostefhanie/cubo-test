@@ -17,11 +17,10 @@ app.get('/health', (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(400).send({
-      code: error.code,
-      message: error.message
+      message: error
     });
   }
 });
-app.use("/v1", api_v1);
+app.use("/", api_v1);
 
 export default app;
