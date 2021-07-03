@@ -1,21 +1,9 @@
 
 
 import { Request, Response } from "express";
-import { User, IUser } from "../models/User"
+import { User } from "../models/User"
 import {validatePassword, tokenSign} from "../config/utils"
 
-export const registerUser = async (req: Request, resp: Response) => {
-  try {
-    let user:IUser = req.body;
-    let userModel = new User(user);
-    await userModel.save()
-    resp.status(200);
-    resp.json({ message: "OK" });
-  } catch (error) {
-    resp.status(500);
-    resp.json({ message: "Error : " + error });
-  }
-}
 
 export const loginUser = async (req: Request, resp: Response) => {
   try {

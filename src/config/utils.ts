@@ -23,3 +23,10 @@ export const tokenSign = (username: string, rol: string): string => {
   }
 };
 
+export const tokenVerify = (token: string): boolean => {
+  let isCorrect = false;
+  jwt.verify(token, secret, (err) => {
+    if (err) {isCorrect = false; } else { isCorrect = true; }
+  });
+  return isCorrect;
+};
