@@ -44,3 +44,20 @@ export const loginUser = async (req: Request, resp: Response) => {
     resp.json({ message: "Error : " + error });
   }
 }
+
+
+
+export const findUsers = async (req: Request, resp: Response) => {
+  try {
+    let userModel = new User()
+    const users = userModel.find(req.body.filter)
+    .limit(req.body.limit)
+    .skip(((req.body.pageNumber - 1) * req.body.limit))
+    .exec();
+    resp.status(200);
+    resp.json({ message: "OK", data: users, pageNumber: req.body.pageNumbe, limit: req.body.limit });
+  } catch (error) {
+    resp.status(500);
+    resp.json({ message: "Error : " + error });
+  }
+}
